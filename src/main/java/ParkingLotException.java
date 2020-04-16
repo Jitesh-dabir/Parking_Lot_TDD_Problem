@@ -7,6 +7,7 @@ public class ParkingLotException extends Exception {
     MyException type;
 
     public ParkingLotException(MyException type, String message) {
+        super(message);
         this.type = type;
     }
 }
