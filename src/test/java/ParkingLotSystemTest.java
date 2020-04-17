@@ -85,7 +85,7 @@ public class ParkingLotSystemTest {
             parkingLotSystem.park(vehicle);
             Vehicle vehicle1 = new Vehicle("2", "car1");
             parkingLotSystem.park(vehicle1);
-            Assert.assertEquals("Full", owner.getIsFull());
+            Assert.assertEquals("Full", owner.getParkingLotStatus());
     }
 
     @Test
@@ -96,8 +96,8 @@ public class ParkingLotSystemTest {
         parkingLotSystem.park(vehicle);
         Vehicle vehicle1 = new Vehicle("2", "car1");
         parkingLotSystem.park(vehicle1);
-        Assert.assertEquals("Full", airportSecurity.getIsFull());
-        Assert.assertEquals("Full", owner.getIsFull());
+        Assert.assertEquals("Full", airportSecurity.getParkingLotStatus());
+        Assert.assertEquals("Full", owner.getParkingLotStatus());
     }
 
     @Test
@@ -107,8 +107,8 @@ public class ParkingLotSystemTest {
         parkingLotSystem.park(vehicle);
         Vehicle vehicle1 = new Vehicle("2", "car1");
         parkingLotSystem.park(vehicle1);
-        Assert.assertEquals("Full", owner.getIsFull());
+        Assert.assertEquals("Full", owner.getParkingLotStatus());
         parkingLotSystem.unPark(vehicle1);
-        Assert.assertEquals("Have Space", owner.getIsFull());
+        Assert.assertEquals("Have Space", owner.getParkingLotStatus());
     }
 }

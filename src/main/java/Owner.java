@@ -1,16 +1,16 @@
 public class Owner implements IObservable {
-    private String isFull;
+    private String parkingLotStatus;
 
     @Override
     public void update(Object status) {
-        this.setIsFull((String) status);
+        this.setParkingLotStatus((String) status);
     }
 
-    public String getIsFull() {
-        return isFull;
+    public String getParkingLotStatus() {
+        return parkingLotStatus;
     }
 
-    public void setIsFull(String isFull) {
-        this.isFull = isFull;
+    public void setParkingLotStatus(String isFull) {
+        this.parkingLotStatus = isFull;
     }
 }
