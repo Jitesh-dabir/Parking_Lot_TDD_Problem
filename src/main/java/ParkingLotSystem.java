@@ -1,31 +1,42 @@
+import java.util.HashMap;
+
 public class ParkingLotSystem {
 
-    private Object vehicle = null;
+    Owner owner = new Owner();
+    HashMap<String, Object> parkingLot = new HashMap();
+    boolean isFull, isEmpty;
+
 
     public ParkingLotSystem() {
     }
 
-    public void park(Object vehicle) throws ParkingLotException {
-        if (this.vehicle != null)
+    public void park(Vehicle vehicle) throws ParkingLotException {
+        if (parkingLot.size() == 2) {
+            owner.setParkingLotStatus("Full");
+            isFull = true;
             throw new ParkingLotException(ParkingLotException.MyException.PARKING_LOT_IS_FULL, "Parking lot is full");
-        this.vehicle = vehicle;
+        } else {
+            parkingLot.put(vehicle.getVehicleId(), vehicle);
+        }
     }
 
-    public void unPark(Object vehicle) throws ParkingLotException {
+    public void unPark(Vehicle vehicle) throws ParkingLotException {
         if (vehicle == null)
             throw new ParkingLotException(ParkingLotException.MyException.NO_SUCH_A_VEHICLE, "No such a vehicle");
-        if (this.vehicle.equals(vehicle))
-            this.vehicle = null;
+        else if (parkingLot.containsKey(vehicle.getVehicleId()))
+            parkingLot.remove(vehicle.getVehicleId());
+        else if (parkingLot.size() < 2)
+            isEmpty = true;
     }
 
-    public boolean isVehicleParked(Object vehicle) {
-        if (this.vehicle.equals(vehicle))
+    public boolean isVehicleParked(Vehicle vehicle) {
+        if (parkingLot.containsKey(vehicle.getVehicleId()))
             return true;
         return false;
     }
 
-    public boolean isVehicleUnParked(Object vehicle) {
-        if (this.vehicle != vehicle)
+    public boolean isVehicleUnParked(Vehicle vehicle) {
+        if (!parkingLot.containsKey(vehicle.getVehicleId()))
             return true;
         return false;
     }
