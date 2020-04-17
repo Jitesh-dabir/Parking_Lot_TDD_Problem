@@ -4,13 +4,13 @@ import org.junit.Test;
 
 public class ParkingLotSystemTest {
     ParkingLotSystem parkingLotSystem = null;
-    AirportSecurity airportSecurity = null;
     Vehicle vehicle = null;
+    Owner owner = null;
 
     @Before
     public void setUp() throws Exception {
         parkingLotSystem = new ParkingLotSystem();
-        airportSecurity = new AirportSecurity();
+        owner = new Owner();
     }
 
     @Test
@@ -71,6 +71,20 @@ public class ParkingLotSystemTest {
             parkingLotSystem.park(vehicle2);
             boolean isParked = parkingLotSystem.isVehicleParked(vehicle);
             Assert.assertEquals(true, isParked);
+        } catch (ParkingLotException e) {
+            Assert.assertEquals(ParkingLotException.MyException.PARKING_LOT_IS_FULL, e.type);
+        }
+    }
+
+    @Test
+    public void givenAVehicles_WhenParkingLotIsFull_ShouldInformToOwner() throws ParkingLotException {
+        try {
+            parkingLotSystem.addObserver(owner);
+            vehicle = new Vehicle("1", "car");
+            parkingLotSystem.park(vehicle);
+            Vehicle vehicle1 = new Vehicle("2", "car1");
+            parkingLotSystem.park(vehicle1);
+            Assert.assertEquals("Full", owner.getIsFull());
         } catch (ParkingLotException e) {
             Assert.assertEquals(ParkingLotException.MyException.PARKING_LOT_IS_FULL, e.type);
         }
