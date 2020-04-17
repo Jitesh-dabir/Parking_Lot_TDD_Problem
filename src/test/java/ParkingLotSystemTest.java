@@ -6,11 +6,13 @@ public class ParkingLotSystemTest {
     ParkingLotSystem parkingLotSystem = null;
     Vehicle vehicle = null;
     Owner owner = null;
+    AirportSecurity airportSecurity = null;
 
     @Before
     public void setUp() throws Exception {
         parkingLotSystem = new ParkingLotSystem();
         owner = new Owner();
+        airportSecurity = new AirportSecurity();
     }
 
     @Test
@@ -61,7 +63,7 @@ public class ParkingLotSystemTest {
     }
 
     @Test
-    public void givenAVehicles_WhenParkingLotIsFull_ShouldThrowException() throws ParkingLotException {
+    public void givenAVehicles_WhenParkingLotIsFull_ShouldThrowException() {
         try {
             vehicle = new Vehicle("1", "car");
             parkingLotSystem.park(vehicle);
@@ -78,15 +80,23 @@ public class ParkingLotSystemTest {
 
     @Test
     public void givenAVehicles_WhenParkingLotIsFull_ShouldInformToOwner() throws ParkingLotException {
-        try {
             parkingLotSystem.addObserver(owner);
             vehicle = new Vehicle("1", "car");
             parkingLotSystem.park(vehicle);
             Vehicle vehicle1 = new Vehicle("2", "car1");
             parkingLotSystem.park(vehicle1);
             Assert.assertEquals("Full", owner.getIsFull());
-        } catch (ParkingLotException e) {
-            Assert.assertEquals(ParkingLotException.MyException.PARKING_LOT_IS_FULL, e.type);
-        }
+    }
+
+    @Test
+    public void givenAVehicles_WhenParkingLotIsFull_ShouldInformToAirportSecurityAndOwner() throws ParkingLotException {
+        parkingLotSystem.addObserver(owner);
+        parkingLotSystem.addObserver(airportSecurity);
+        vehicle = new Vehicle("1", "car");
+        parkingLotSystem.park(vehicle);
+        Vehicle vehicle1 = new Vehicle("2", "car1");
+        parkingLotSystem.park(vehicle1);
+        Assert.assertEquals("Full", airportSecurity.getIsFull());
+        Assert.assertEquals("Full", owner.getIsFull());
     }
 }
