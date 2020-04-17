@@ -16,7 +16,7 @@ public class ParkingLotSystem {
         this.observableList.add(iObservable);
     }
 
-    public void setInformation(String isFull) {
+    public void setStatus(String isFull) {
         this.isFull = isFull;
         for (IObservable observable : this.observableList) {
             observable.update(this.isFull);
@@ -30,7 +30,7 @@ public class ParkingLotSystem {
             throw new ParkingLotException(ParkingLotException.MyException.PARKING_LOT_IS_FULL, "Parking lot is full");
         }
         if (parkingLot.size() == parkingLotCapacity)
-            setInformation("Full");
+            setStatus("Full");
     }
 
     public void unPark(Vehicle vehicle) throws ParkingLotException {
@@ -38,6 +38,8 @@ public class ParkingLotSystem {
             throw new ParkingLotException(ParkingLotException.MyException.NO_SUCH_A_VEHICLE, "No such a vehicle");
         else if (parkingLot.containsKey(vehicle.getVehicleId()))
             parkingLot.remove(vehicle.getVehicleId());
+        if (parkingLot.size() < parkingLotCapacity)
+            setStatus("Have Space");
     }
 
     public boolean isVehicleParked(Vehicle vehicle) {
