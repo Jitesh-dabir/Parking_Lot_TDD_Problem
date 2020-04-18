@@ -1,15 +1,22 @@
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class ParkingLotSystem {
 
     private String isFull;
     private int parkingLotCapacity = 2;
-    HashMap<String, Object> parkingLot = new HashMap();
+    LinkedHashMap<String, Vehicle> parkingLot = new LinkedHashMap();
     private List<IObservable> observableList = new ArrayList<>();
+    Owner owner = null;
+    Attendant attendant = null;
 
     public ParkingLotSystem() {
+    }
+
+    public ParkingLotSystem(Owner owner, Attendant attendant) {
+        this.owner = owner;
+        this.attendant = attendant;
     }
 
     public void addObserver(IObservable iObservable) {
@@ -24,20 +31,19 @@ public class ParkingLotSystem {
     }
 
     public void park(Vehicle vehicle) throws ParkingLotException {
-        if (parkingLot.size() < parkingLotCapacity) {
-            parkingLot.put(vehicle.getVehicleId(), vehicle);
-        } else if (parkingLot.size() == parkingLotCapacity) {
-            throw new ParkingLotException(ParkingLotException.MyException.PARKING_LOT_IS_FULL, "Parking lot is full");
+        boolean isAvailable = owner.isAvailable(parkingLot, parkingLotCapacity);
+        if (isAvailable) {
+            attendant.park(parkingLot, vehicle);
         }
         if (parkingLot.size() == parkingLotCapacity)
             setStatus("Full");
     }
 
     public void unPark(Vehicle vehicle) throws ParkingLotException {
-        if (vehicle == null)
-            throw new ParkingLotException(ParkingLotException.MyException.NO_SUCH_A_VEHICLE, "No such a vehicle");
-        else if (parkingLot.containsKey(vehicle.getVehicleId()))
-            parkingLot.remove(vehicle.getVehicleId());
+        boolean isPresent = owner.isPresent(parkingLot, vehicle);
+        if (isPresent) {
+            attendant.UnPark(parkingLot, vehicle);
+        }
         if (parkingLot.size() < parkingLotCapacity)
             setStatus("Have Space");
     }
