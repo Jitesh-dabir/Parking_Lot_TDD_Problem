@@ -1,11 +1,12 @@
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 
 public class ParkingLotSystem {
 
     private String isFull;
-    private int parkingLotCapacity = 2;
+    private int parkingLotCapacity = 10;
     LinkedHashMap<String, Vehicle> parkingLot = new LinkedHashMap();
     private List<IObservable> observableList = new ArrayList<>();
     Owner owner = null;
@@ -58,5 +59,11 @@ public class ParkingLotSystem {
         if (!parkingLot.containsKey(vehicle.getVehicleId()))
             return true;
         return false;
+    }
+
+    public int getMyCarParkingNumber(Vehicle vehicle) {
+        Set<String> keys = parkingLot.keySet();
+        List<String> listKeys = new ArrayList<String>(keys);
+        return listKeys.indexOf(vehicle.getVehicleId());
     }
 }
