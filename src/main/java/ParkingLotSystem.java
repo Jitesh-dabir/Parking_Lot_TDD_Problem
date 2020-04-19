@@ -1,23 +1,19 @@
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class ParkingLotSystem {
 
     private String isFull;
-    private int parkingLotCapacity = 10;
-    LinkedHashMap<String, Vehicle> parkingLot = new LinkedHashMap();
+    private int parkingLotCapacity = 11;
+    private int numberOfSlot = 1;
+    LinkedHashMap<String, Vehicle> parkingLot = null;
     private List<IObservable> observableList = new ArrayList<>();
     Owner owner = null;
     Attendant attendant = null;
 
-    public ParkingLotSystem() {
-    }
-
-    public ParkingLotSystem(Owner owner, Attendant attendant) {
+    public ParkingLotSystem(Owner owner, Attendant attendant, LinkedHashMap parkingLot) {
         this.owner = owner;
         this.attendant = attendant;
+        this.parkingLot = parkingLot;
     }
 
     public void addObserver(IObservable iObservable) {
@@ -32,31 +28,29 @@ public class ParkingLotSystem {
     }
 
     public void park(Vehicle vehicle) throws ParkingLotException {
-        boolean isAvailable = owner.isAvailable(parkingLot, parkingLotCapacity);
-        if (isAvailable) {
-            attendant.park(parkingLot, vehicle);
-        }
-        if (parkingLot.size() == parkingLotCapacity)
+        String getKey = owner.isAvailable(parkingLot, parkingLotCapacity);
+        attendant.park(parkingLot, vehicle, getKey);
+
+        if (!parkingLot.containsValue(null))
             setStatus("Full");
     }
 
     public void unPark(Vehicle vehicle) throws ParkingLotException {
-        boolean isPresent = owner.isPresent(parkingLot, vehicle);
-        if (isPresent) {
-            attendant.UnPark(parkingLot, vehicle);
-        }
-        if (parkingLot.size() < parkingLotCapacity)
+        String getKey = owner.isPresent(parkingLot, vehicle);
+        attendant.UnPark(parkingLot, getKey);
+        if (parkingLot.containsValue(null)) {
             setStatus("Have Space");
+        }
     }
 
     public boolean isVehicleParked(Vehicle vehicle) {
-        if (parkingLot.containsKey(vehicle.getVehicleId()))
+        if (parkingLot.containsValue(vehicle))
             return true;
         return false;
     }
 
     public boolean isVehicleUnParked(Vehicle vehicle) {
-        if (!parkingLot.containsKey(vehicle.getVehicleId()))
+        if (!parkingLot.containsValue(vehicle))
             return true;
         return false;
     }
@@ -64,6 +58,34 @@ public class ParkingLotSystem {
     public int getMyCarParkingNumber(Vehicle vehicle) {
         Set<String> keys = parkingLot.keySet();
         List<String> listKeys = new ArrayList<String>(keys);
-        return listKeys.indexOf(vehicle.getVehicleId());
+        Iterator<String> itr = parkingLot.keySet().iterator();
+        while (itr.hasNext()) {
+            String key = itr.next();
+            if (parkingLot.get(key) == vehicle)
+                return listKeys.indexOf(key);
+        }
+        return 0;
+    }
+
+    public void createParkingLot() {
+        int counter = 1, index = 0, slot = 1, length = 0, slotCapacity = 0;
+        while (index != parkingLotCapacity) {
+            slotCapacity = parkingLotCapacity / numberOfSlot;
+            if (parkingLotCapacity % numberOfSlot != 0)
+                slotCapacity += 1;
+            if (counter == slotCapacity + 1) {
+                counter = 1;
+                slot++;
+            }
+            String number1 = Integer.toString(counter);
+            length = number1.length();
+            if (length == 1) {
+                number1 = "0" + number1;
+            }
+            String key = "P" + Integer.toString(slot) + number1;
+            parkingLot.put(key, null);
+            index++;
+            counter++;
+        }
     }
 }

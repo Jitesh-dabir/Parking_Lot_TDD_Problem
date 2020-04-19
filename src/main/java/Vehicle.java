@@ -6,12 +6,4 @@ public class Vehicle {
         this.vehicleId = id;
         this.name = name;
     }
-
-    public String getVehicleId() {
-        return vehicleId;
-    }
-
-    public String getName() {
-        return name;
-    }
 }
