@@ -1,17 +1,39 @@
 import java.util.*;
 
 public class Attendant {
-    String vehicleKey;
+    private String vehicleKey;
+    String parkMethod = "PARK";
+    String unParkMethod = "UN_PARK";
+    int value;
 
     public void park(HashMap<String, Vehicle> parkingLot, Vehicle vehicle, LinkedHashMap<String, Integer> availableLot) {
         String keyAvailable = Collections.max(availableLot.entrySet(), Map.Entry.comparingByValue()).getKey();
-        Iterator<String> itr = parkingLot.keySet().iterator();
-        while (itr.hasNext()) {
-            String key = itr.next();
-            if (key.substring(0, 2).equals(keyAvailable) && parkingLot.get(key) == null) {
-                parkingLot.replace(key, vehicle);
-                int value = (availableLot.get(keyAvailable) - 1);
-                availableLot.replace(keyAvailable, value);
+        Iterator<String> parkingLotItr = parkingLot.keySet().iterator();
+        while (parkingLotItr.hasNext()) {
+            vehicleKey = parkingLotItr.next();
+            if (vehicle.getDriverType().equals(Vehicle.DriverType.HANDICAP) && parkingLot.get(vehicleKey) == null) {
+                parkingLot.replace(vehicleKey, vehicle);
+                updateAvailableLot(availableLot, vehicleKey, parkMethod);
+                break;
+            } else if (vehicleKey.substring(0, 2).equals(keyAvailable) && parkingLot.get(vehicleKey) == null) {
+                parkingLot.replace(vehicleKey, vehicle);
+                updateAvailableLot(availableLot, vehicleKey, parkMethod);
+                break;
+            }
+        }
+    }
+
+    public void updateAvailableLot(LinkedHashMap<String, Integer> availableLot, String vehicleKey, String method) {
+        Iterator<String> availableLotItr = availableLot.keySet().iterator();
+        while (availableLotItr.hasNext()) {
+            String availableKey = availableLotItr.next();
+            if (vehicleKey.substring(0, 2).equals(availableKey) && method == parkMethod) {
+                value = (availableLot.get(availableKey) - 1);
+                availableLot.replace(availableKey, value);
+                break;
+            } else if (vehicleKey.substring(0, 2).equals(availableKey) && method == unParkMethod) {
+                value = (availableLot.get(availableKey) + 1);
+                availableLot.replace(availableKey, value);
                 break;
             }
         }
@@ -25,13 +47,6 @@ public class Attendant {
                 vehicleKey = key;
         }
         parkingLot.replace(vehicleKey, null);
-        Iterator<String> availableLotItr = availableLot.keySet().iterator();
-        while (availableLotItr.hasNext()) {
-            String key = availableLotItr.next();
-            int value = (availableLot.get(key) + 1);
-            if (vehicleKey.substring(0, 2).equals(key)) {
-                availableLot.replace(key, value);
-            }
-        }
+        updateAvailableLot(availableLot, vehicleKey, unParkMethod);
     }
 }
