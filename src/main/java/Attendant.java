@@ -11,7 +11,7 @@ public class Attendant {
         Iterator<String> parkingLotItr = parkingLot.keySet().iterator();
         while (parkingLotItr.hasNext()) {
             vehicleKey = parkingLotItr.next();
-            if (vehicle.getDriverType().equals(Vehicle.DriverType.HANDICAP) && parkingLot.get(vehicleKey) == null) {
+            if (vehicle.getDriver().getDriverType().equals(Driver.DriverType.HANDICAP) && parkingLot.get(vehicleKey) == null) {
                 parkingLot.replace(vehicleKey, vehicle);
                 updateAvailableLot(availableLot, vehicleKey, parkMethod);
                 break;
