@@ -1,19 +1,16 @@
 public class Vehicle {
 
-    enum DriverType {
-        HANDICAP,NORMAL
-    }
+    private Driver driver;
     private String vehicleId;
     private String name;
-    private DriverType driverType;
 
-    public Vehicle(String id, String name, DriverType driverType) {
+    public Vehicle(String id, String name, Driver driver) {
         this.vehicleId = id;
         this.name = name;
-        this.driverType=driverType;
+        this.driver = driver;
     }
 
-    public DriverType getDriverType() {
-        return driverType;
+    public Driver getDriver() {
+        return driver;
     }
 }
