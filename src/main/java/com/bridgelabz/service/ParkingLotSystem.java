@@ -7,6 +7,7 @@ import com.bridgelabz.utility.ParkingLot;
 import com.bridgelabz.utility.Vehicle;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ParkingLotSystem {
 
@@ -17,7 +18,7 @@ public class ParkingLotSystem {
     LinkedHashMap<String, Integer> availableLot = null;
     String lotName[] = new String[25];
     private List<IObservable> observableList = new ArrayList<>();
-    private List<String> listForPoliceDepartment = new ArrayList<>();
+    Map<String,Vehicle> listForPoliceDepartment = new HashMap<>();
     Owner owner = null;
     ParkingLot parkingLotHandler = null;
 
@@ -100,5 +101,10 @@ public class ParkingLotSystem {
             if (slot == numberOfSlot)
                 availableLot.put(lotName[slot - 1], counter - 1);
         }
+    }
+
+    public Map<String, Vehicle> getRecordsByVehicleColorForPolice(Vehicle.Color color) {
+        return listForPoliceDepartment = parkingLot.entrySet().stream().filter(entry -> color.equals(entry.getValue().getColor()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 }
