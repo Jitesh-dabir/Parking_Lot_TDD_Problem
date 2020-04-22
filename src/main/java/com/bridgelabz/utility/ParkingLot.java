@@ -5,12 +5,13 @@ import com.bridgelabz.utility.Driver;
 
 import java.util.*;
 
-public class Attendant {
+public class ParkingLot {
     private String vehicleKey;
     String parkMethod = "PARK";
     String unParkMethod = "UN_PARK";
+    String nextVehicleKey;
     String parkMethodForLargeVehicle = "PARK_LARGE_VEHICLE";
-    String unParkMethodForLargeVehicle = "UNPARK_LARGE_VEHICLE";
+    String unParkMethodForLargeVehicle = "UN_PARK_LARGE_VEHICLE";
     int value;
 
     public void park(HashMap<String, Vehicle> parkingLot, Vehicle vehicle, LinkedHashMap<String, Integer> availableLot) throws ParkingLotException {
@@ -70,7 +71,7 @@ public class Attendant {
             } else if (vehicleKey.substring(0, 1).equals(availableKey) && method == parkMethodForLargeVehicle) {
                 value = (availableLot.get(availableKey) - 2);
                 availableLot.replace(availableKey, value);
-            }  else if (vehicleKey.substring(0, 1).equals(availableKey) && method == unParkMethodForLargeVehicle) {
+            } else if (vehicleKey.substring(0, 1).equals(availableKey) && method == unParkMethodForLargeVehicle) {
                 value = (availableLot.get(availableKey) + 2);
                 availableLot.replace(availableKey, value);
             }
@@ -89,8 +90,8 @@ public class Attendant {
                 break;
             }
         }
-        String nextVehicleKey = getNextKey(vehicleKey, parkingLot);
-        if (vehicle.getVehicleType().equals(Vehicle.VehicleType.LARGE)) {
+        if (vehicle.getVehicleType().equals(Vehicle.VehicleType.LARGE) && !vehicleKey.equals(getLastKey(parkingLot))) {
+            nextVehicleKey = getNextKey(vehicleKey, parkingLot);
             parkingLot.replace(vehicleKey, null);
             parkingLot.replace(nextVehicleKey, null);
             updateAvailableLot(availableLot, vehicleKey, unParkMethodForLargeVehicle);
@@ -98,5 +99,13 @@ public class Attendant {
             parkingLot.replace(vehicleKey, null);
             updateAvailableLot(availableLot, vehicleKey, unParkMethod);
         }
+    }
+
+    private String getLastKey(LinkedHashMap<String, Vehicle> parkingLot) {
+        for (Map.Entry<String, Vehicle> entry : parkingLot.entrySet()) {
+            String lastKey = entry.getKey();
+            return lastKey;
+        }
+        return null;
     }
 }
