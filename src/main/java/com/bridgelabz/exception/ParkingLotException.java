@@ -1,10 +1,12 @@
+package com.bridgelabz.exception;
+
 public class ParkingLotException extends Exception {
 
-    enum MyException {
-        PARKING_LOT_IS_FULL, NO_SUCH_A_VEHICLE
+    public enum MyException {
+        PARKING_LOT_IS_FULL, NO_SUCH_A_VEHICLE, PARKING_LOT_IS_FULL_FOR_LARGE_VEHICLE
     }
 
-    MyException type;
+    public MyException type;
 
     public ParkingLotException(MyException type, String message) {
         super(message);
