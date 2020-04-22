@@ -249,7 +249,7 @@ public class ParkingLotSystemTest {
     }
 
     @Test
-    public void givenVehicles_WhenPoliceDepartmentWantAllWhiteCars_ShouldReturnLocationOfAllCars() throws ParkingLotException {
+    public void givenVehicles_WhenAnySlotDoNotHaveSpaceForLargeVehicle_ShouldThrowException() throws ParkingLotException {
         try {
             int numberOfCars = 8;
             parkingLotSystem = new ParkingLotSystem(owner, parkingLotHandler, parkingLot, availableLot);
