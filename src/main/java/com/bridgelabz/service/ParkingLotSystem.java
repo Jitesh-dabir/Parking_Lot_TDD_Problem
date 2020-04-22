@@ -1,6 +1,12 @@
+package com.bridgelabz.service;
+
+import com.bridgelabz.exception.ParkingLotException;
+import com.bridgelabz.observer.IObservable;
+import com.bridgelabz.observer.Owner;
+import com.bridgelabz.utility.ParkingLot;
+import com.bridgelabz.utility.Vehicle;
+
 import java.util.*;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public class ParkingLotSystem {
 
@@ -9,14 +15,15 @@ public class ParkingLotSystem {
     private int numberOfSlot = 4;
     LinkedHashMap<String, Vehicle> parkingLot = null;
     LinkedHashMap<String, Integer> availableLot = null;
+    String lotName[] = new String[25];
     private List<IObservable> observableList = new ArrayList<>();
     private List<String> listForPoliceDepartment = new ArrayList<>();
     Owner owner = null;
-    Attendant attendant = null;
+    ParkingLot parkingLotHandler = null;
 
-    public ParkingLotSystem(Owner owner, Attendant attendant, LinkedHashMap parkingLot, LinkedHashMap availableLot) {
+    public ParkingLotSystem(Owner owner, ParkingLot parkingLotHandler, LinkedHashMap parkingLot, LinkedHashMap availableLot) {
         this.owner = owner;
-        this.attendant = attendant;
+        this.parkingLotHandler = parkingLotHandler;
         this.parkingLot = parkingLot;
         this.availableLot = availableLot;
     }
@@ -33,15 +40,13 @@ public class ParkingLotSystem {
     }
 
     public void park(Vehicle vehicle) throws ParkingLotException {
-        owner.isAvailable(parkingLot, parkingLotCapacity);
-        attendant.park(parkingLot, vehicle, availableLot);
+        parkingLotHandler.park(parkingLot, vehicle, availableLot);
         if (!parkingLot.containsValue(null))
             setStatus("Full");
     }
 
     public void unPark(Vehicle vehicle) throws ParkingLotException {
-        owner.isPresent(parkingLot, vehicle);
-        attendant.UnPark(parkingLot, vehicle, availableLot);
+        parkingLotHandler.UnPark(parkingLot, vehicle, availableLot);
         if (parkingLot.containsValue(null)) {
             setStatus("Have Space");
         }
@@ -71,13 +76,15 @@ public class ParkingLotSystem {
 
     public void createParkingLot() {
         int counter = 1, index = 0, slot = 1, length = 0, slotCapacity = 0;
+        String letters = "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z";
+        lotName = letters.split(" ");
         while (index != parkingLotCapacity) {
             slotCapacity = parkingLotCapacity / numberOfSlot;
             if (parkingLotCapacity % numberOfSlot != 0) {
                 slotCapacity += 1;
             }
             if (counter == slotCapacity + 1) {
-                availableLot.put("P" + Integer.toString(slot), counter - 1);
+                availableLot.put(lotName[slot - 1], counter - 1);
                 counter = 1;
                 slot++;
             }
@@ -86,23 +93,12 @@ public class ParkingLotSystem {
             if (length == 1) {
                 number1 = "0" + number1;
             }
-            String key = "P" + Integer.toString(slot) + number1;
+            String key = lotName[slot - 1] + number1;
             parkingLot.put(key, null);
             index++;
             counter++;
             if (slot == numberOfSlot)
-                availableLot.put("P" + Integer.toString(slot), counter - 1);
+                availableLot.put(lotName[slot - 1], counter - 1);
         }
-    }
-
-    public List<String> getRecordsForPolice() {
-        Map<String, Vehicle> result = parkingLot.entrySet()
-                .stream()
-                .filter(map -> map.getValue().getColor().equals("White"))
-                .collect(Collectors.toMap(map -> map.getKey(), map -> map.getValue()));
-        parkingLot.entrySet().forEach(entry->{
-            System.out.println(entry.getKey() + " " + entry.getValue().getColor());
-        });
-        return null;
     }
 }
