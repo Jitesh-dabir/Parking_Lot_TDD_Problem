@@ -1,4 +1,6 @@
 import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class ParkingLotSystem {
 
@@ -8,6 +10,7 @@ public class ParkingLotSystem {
     LinkedHashMap<String, Vehicle> parkingLot = null;
     LinkedHashMap<String, Integer> availableLot = null;
     private List<IObservable> observableList = new ArrayList<>();
+    private List<String> listForPoliceDepartment = new ArrayList<>();
     Owner owner = null;
     Attendant attendant = null;
 
@@ -90,5 +93,16 @@ public class ParkingLotSystem {
             if (slot == numberOfSlot)
                 availableLot.put("P" + Integer.toString(slot), counter - 1);
         }
+    }
+
+    public List<String> getRecordsForPolice() {
+        Map<String, Vehicle> result = parkingLot.entrySet()
+                .stream()
+                .filter(map -> map.getValue().getColor().equals("White"))
+                .collect(Collectors.toMap(map -> map.getKey(), map -> map.getValue()));
+        parkingLot.entrySet().forEach(entry->{
+            System.out.println(entry.getKey() + " " + entry.getValue().getColor());
+        });
+        return null;
     }
 }
