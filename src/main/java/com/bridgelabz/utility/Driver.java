@@ -1,6 +1,8 @@
+package com.bridgelabz.utility;
+
 public class Driver {
 
-    enum DriverType {
+    public enum DriverType {
         HANDICAP,NORMAL
     }
 

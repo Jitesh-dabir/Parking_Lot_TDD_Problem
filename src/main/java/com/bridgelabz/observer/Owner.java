@@ -1,7 +1,6 @@
-import java.util.LinkedHashMap;
-import java.util.Map;
+package com.bridgelabz.observer;
 
-public class Owner implements IObservable, IAvailability {
+public class Owner implements IObservable {
     private String parkingLotStatus;
 
     @Override
@@ -15,18 +14,5 @@ public class Owner implements IObservable, IAvailability {
 
     public void setParkingLotStatus(String isFull) {
         this.parkingLotStatus = isFull;
-    }
-
-    @Override
-    public void isAvailable(Map<String, Vehicle> parkingLot, int parkingLotCapacity) throws ParkingLotException {
-        if (!parkingLot.containsValue(null)) {
-            throw new ParkingLotException(ParkingLotException.MyException.PARKING_LOT_IS_FULL, "Parking lot is full");
-        }
-    }
-
-    public void isPresent(LinkedHashMap<String, Vehicle> parkingLot, Vehicle vehicle) throws ParkingLotException {
-        if (vehicle == null) {
-            throw new ParkingLotException(ParkingLotException.MyException.NO_SUCH_A_VEHICLE, "No such a vehicle");
-        }
     }
 }

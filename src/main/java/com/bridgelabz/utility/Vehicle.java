@@ -1,3 +1,5 @@
+package com.bridgelabz.utility;
+
 public class Vehicle {
 
     private final Color color;
@@ -6,12 +8,12 @@ public class Vehicle {
     private String name;
     private VehicleType vehicleType;
 
-    enum VehicleType {
+    public enum VehicleType {
         SMALL, LARGE
     }
 
-    enum Color {
-        RED,BLUE,BLACK,GREEN,WHITE
+    public enum Color {
+        RED, BLUE, BLACK, GREEN, WHITE
     }
 
     public Vehicle(String id, String name, Driver driver, VehicleType vehicleType, Color color) {
@@ -30,15 +32,7 @@ public class Vehicle {
         return color;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getVehicleId() {
-        return vehicleId;
-    }
-
-    public VehicleType getDriverType() {
+    public VehicleType getVehicleType() {
         return vehicleType;
     }
 }

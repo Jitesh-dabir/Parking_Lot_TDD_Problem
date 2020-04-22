@@ -1,3 +1,5 @@
+package com.bridgelabz.observer;
+
 public class AirportSecurity implements IObservable {
     private String parkingLotStatus;
 
