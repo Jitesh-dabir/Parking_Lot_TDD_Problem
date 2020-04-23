@@ -7,6 +7,8 @@ import com.bridgelabz.utility.ParkingLot;
 import com.bridgelabz.utility.Slot;
 import com.bridgelabz.utility.Vehicle;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -138,6 +140,11 @@ public class ParkingLotSystem {
 
     public Map<String, Slot> getRecordsByCarBrand(Vehicle.Vehicle_Brand brand) {
         return parkingLot.entrySet().stream().filter(entry -> brand.equals(entry.getValue().getVehicle().getVehicle_brand()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    public Map<String, Slot> getRecordsByTime() {
+        return parkingLot.entrySet().stream().filter(entry -> (java.time.Duration.between(entry.getValue().getTime(), LocalTime.now()).toMinutes() < 30))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 }
