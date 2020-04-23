@@ -2,10 +2,9 @@ package com.bridgelabz.utility;
 
 public class Vehicle {
 
-    private  Color color;
+    private Color color;
     private Driver driver;
     private String vehicleId;
-    private String name;
     private VehicleType vehicleType;
     private Vehicle_Brand vehicle_brand;
 
@@ -17,7 +16,7 @@ public class Vehicle {
     }
 
     public enum Vehicle_Brand {
-        TOYOTA,BMW,MARUTI,CIAZ,HONDA
+        TOYOTA, BMW, MARUTI, CIAZ, HONDA
     }
 
     public enum Color {

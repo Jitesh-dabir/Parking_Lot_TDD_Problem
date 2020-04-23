@@ -2,7 +2,6 @@ package com.bridgelabz.utility;
 
 import com.bridgelabz.exception.ParkingLotException;
 import com.bridgelabz.observer.Owner;
-import com.bridgelabz.utility.Driver;
 
 import java.util.*;
 
@@ -21,18 +20,18 @@ public class ParkingLot {
         while (parkingLotItr.hasNext()) {
             vehicleKey = parkingLotItr.next();
             if (vehicle.getDriver().getDriverType().equals(Driver.DriverType.HANDICAP) && parkingLot.get(vehicleKey).getVehicle() == null) {
-                parkingLot.replace(vehicleKey, new Slot(vehicle, owner.getAttendant()));
+                parkingLot.replace(vehicleKey, new Slot(vehicle, owner.getAttendant(keyAvailable)));
                 updateAvailableLot(availableLot, vehicleKey, parkMethod);
                 break;
             } else if (vehicleKey.substring(0, 1).equals(keyAvailable) && parkingLot.get(vehicleKey).getVehicle() == null && !vehicle.getVehicleType().equals(Vehicle.VehicleType.LARGE)) {
-                parkingLot.replace(vehicleKey, new Slot(vehicle, owner.getAttendant()));
+                parkingLot.replace(vehicleKey, new Slot(vehicle, owner.getAttendant(keyAvailable)));
                 updateAvailableLot(availableLot, vehicleKey, parkMethod);
                 break;
             }
             String nextVehicleKey = getNextKey(vehicleKey, parkingLot);
             if (vehicle.getVehicleType().equals(Vehicle.VehicleType.LARGE) && parkingLot.get(vehicleKey).getVehicle() == null && parkingLot.get(vehicleKey).getVehicle() == parkingLot.get(nextVehicleKey).getVehicle()) {
-                parkingLot.replace(vehicleKey, new Slot(vehicle, owner.getAttendant()));
-                parkingLot.replace(nextVehicleKey, new Slot(vehicle, owner.getAttendant()));
+                parkingLot.replace(vehicleKey, new Slot(vehicle, owner.getAttendant(keyAvailable)));
+                parkingLot.replace(nextVehicleKey, new Slot(vehicle, owner.getAttendant(keyAvailable)));
                 updateAvailableLot(availableLot, vehicleKey, parkMethodForLargeVehicle);
                 break;
             }

@@ -2,6 +2,7 @@ package com.bridgelabz.observer;
 
 import com.bridgelabz.utility.Attendant;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class Owner implements IObservable {
@@ -26,14 +27,19 @@ public class Owner implements IObservable {
         this.parkingLotStatus = isFull;
     }
 
-    public void assignAttendantForParkingLot(int numberOfSlot) {
+    public void assignAttendantForParkingLot(int numberOfSlot, LinkedHashMap<String, Integer> availableLot) {
         this.numberOfSlot = numberOfSlot;
         for (int i = 0; i < numberOfSlot; i++) {
-            attendants.add(new Attendant("Attendant" + Integer.toString(i + 1)));
+            String firstKey = availableLot.keySet().toArray()[i].toString();
+            attendants.add(new Attendant("attendant_" + firstKey));
         }
     }
 
-    public Attendant getAttendant() {
-        return attendants.get((int) (Math.random() * numberOfSlot));
+    public Attendant getAttendant(String keyAvailable) {
+        for (int i = 0; i < attendants.size(); i++) {
+            if (attendants.get(i).getName().contains(keyAvailable))
+                return attendants.get(i);
+        }
+        return null;
     }
 }
