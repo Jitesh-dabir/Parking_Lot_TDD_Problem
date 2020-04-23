@@ -98,7 +98,6 @@ public class ParkingLotSystem {
     }
 
     public void createParkingLot(int parkingLotCapacity, int numberOfSlot) {
-        owner.assignAttendantForParkingLot(numberOfSlot);
         int counter = 1, index = 0, slot = 1, length = 0, slotCapacity = 0;
         String letters = "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z";
         lotName = letters.split(" ");
@@ -124,6 +123,7 @@ public class ParkingLotSystem {
             if (slot == numberOfSlot)
                 availableLot.put(lotName[slot - 1], counter - 1);
         }
+        owner.assignAttendantForParkingLot(numberOfSlot, availableLot);
     }
 
     public Map<String, Slot> getRecordsByVehicleColorForPolice(Vehicle.Color color) {
@@ -133,6 +133,11 @@ public class ParkingLotSystem {
 
     public Map<String, Slot> getRecordsByVehicleColorAndName(Vehicle.Vehicle_Brand brand, Vehicle.Color color) {
         return parkingLot.entrySet().stream().filter(entry -> color.equals(entry.getValue().getVehicle().getColor()) && brand.equals(entry.getValue().getVehicle().getVehicle_brand()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    public Map<String, Slot> getRecordsByCarBrand(Vehicle.Vehicle_Brand brand) {
+        return parkingLot.entrySet().stream().filter(entry -> brand.equals(entry.getValue().getVehicle().getVehicle_brand()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 }
