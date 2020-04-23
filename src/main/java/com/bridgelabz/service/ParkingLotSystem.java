@@ -154,4 +154,9 @@ public class ParkingLotSystem {
                 && entry.getValue().getVehicle().getVehicleType().equals(small) && entry.getValue().getVehicle().getDriver().getDriverType().equals(handicap))))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
-}
+
+    public Map<String, Slot> getAllRecordsOfParkingLot() {
+            return parkingLot.entrySet().stream().filter(entry -> entry.getValue().getVehicle() != null)
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        }
+    }
