@@ -1,14 +1,19 @@
 package com.bridgelabz.observer;
 
 import com.bridgelabz.utility.Attendant;
+import com.bridgelabz.utility.Slot;
+import com.bridgelabz.utility.Vehicle;
 
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Owner implements IObservable {
     private List<Attendant> attendants;
     private String parkingLotStatus;
     private int numberOfSlot;
+    private String slotKey;
 
     public Owner(List<Attendant> attendants) {
         this.attendants = attendants;

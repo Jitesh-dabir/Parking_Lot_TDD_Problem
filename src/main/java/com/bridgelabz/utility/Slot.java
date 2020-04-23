@@ -1,16 +1,16 @@
 package com.bridgelabz.utility;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class Slot {
     private Attendant attendant;
     private Vehicle vehicle;
-    private LocalDateTime time;
+    private LocalTime time;
 
     public Slot(Vehicle vehicle, Attendant attendant) {
         this.vehicle = vehicle;
         this.attendant = attendant;
-        this.time = LocalDateTime.now();
+        this.time = LocalTime.now();
     }
 
     public Vehicle getVehicle() {
@@ -19,6 +19,14 @@ public class Slot {
 
     public Attendant getAttendant() {
         return attendant;
+    }
+
+    public LocalTime getTime() {
+        return time;
+    }
+
+    public void setTime(LocalTime time) {
+        this.time = time;
     }
 
     public Slot resetSlot() {
