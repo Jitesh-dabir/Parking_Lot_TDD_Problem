@@ -395,4 +395,29 @@ public class ParkingLotSystemTest {
         Assert.assertEquals("MH46-1", elementAt3.getValue().getVehicle().getVehicleId());
         Assert.assertEquals("attendant_B", elementAt3.getValue().getAttendant().getName());
     }
+
+    @Test
+    public void givenVehicles_WhenPoliceDepartmentWantSmallHandicapCarsInformationOFBAndDLot_ShouldReturnLocationOfAllCars() throws ParkingLotException {
+        int numberOfCars = 9;
+        parkingLotSystem = new ParkingLotSystem(owner, parkingLotHandler, parkingLot, availableLot);
+        parkingLotSystem.createParkingLot(11, 4);
+        parkingLotSystem.addObserver(owner);
+        for (int i = 0; i < numberOfCars; i++) {
+            Vehicle vehicle = new Vehicle("MH46-" + Integer.toString(i), Vehicle.Vehicle_Brand.BMW, new Driver(Driver.DriverType.HANDICAP), Vehicle.VehicleType.SMALL, Vehicle.Color.RED);
+            parkingLotSystem.park(vehicle);
+        }
+        Vehicle vehicle2 = new Vehicle("MH46-55", Vehicle.Vehicle_Brand.HONDA, new Driver(Driver.DriverType.NORMAL), Vehicle.VehicleType.SMALL, Vehicle.Color.BLUE);
+        parkingLotSystem.park(vehicle2);
+        Vehicle vehicle3 = new Vehicle("MH46-75", Vehicle.Vehicle_Brand.TOYOTA, new Driver(Driver.DriverType.NORMAL), Vehicle.VehicleType.SMALL, Vehicle.Color.BLUE);
+        parkingLotSystem.park(vehicle3);
+        listForPoliceDepartment = parkingLotSystem.getRecordsByDriverAndCarType(Vehicle.VehicleType.SMALL,"B","D",Driver.DriverType.HANDICAP);
+        Assert.assertEquals(3, listForPoliceDepartment.size());
+        Set<Map.Entry<String, Slot>> mapSet = listForPoliceDepartment.entrySet();
+        Map.Entry<String, Slot> elementAt3 = (new ArrayList<Map.Entry<String, Slot>>(mapSet)).get(2);
+        Assert.assertEquals(3, mapSet.size());
+        Assert.assertEquals(Vehicle.Color.RED, elementAt3.getValue().getVehicle().getColor());
+        Assert.assertEquals("B03", elementAt3.getKey());
+        Assert.assertEquals("MH46-5", elementAt3.getValue().getVehicle().getVehicleId());
+        Assert.assertEquals("attendant_C", elementAt3.getValue().getAttendant().getName());
+    }
 }
