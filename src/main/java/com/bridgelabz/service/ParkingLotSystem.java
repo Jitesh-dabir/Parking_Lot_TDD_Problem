@@ -3,6 +3,7 @@ package com.bridgelabz.service;
 import com.bridgelabz.exception.ParkingLotException;
 import com.bridgelabz.observer.IObservable;
 import com.bridgelabz.observer.Owner;
+import com.bridgelabz.utility.Driver;
 import com.bridgelabz.utility.ParkingLot;
 import com.bridgelabz.utility.Slot;
 import com.bridgelabz.utility.Vehicle;
@@ -145,6 +146,12 @@ public class ParkingLotSystem {
 
     public Map<String, Slot> getRecordsByTime() {
         return parkingLot.entrySet().stream().filter(entry -> (java.time.Duration.between(entry.getValue().getTime(), LocalTime.now()).toMinutes() < 30))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    public Map<String, Slot> getRecordsByDriverAndCarType(Vehicle.VehicleType small, String B, String D, Driver.DriverType handicap) {
+        return parkingLot.entrySet().stream().filter(entry -> ((entry.getKey().substring(0, 1).equals(B) || entry.getKey().substring(0, 1).equals(D)
+                && entry.getValue().getVehicle().getVehicleType().equals(small) && entry.getValue().getVehicle().getDriver().getDriverType().equals(handicap))))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 }
